@@ -5,10 +5,17 @@ import datetime as dt
 import os
 import pandas as pd
 import pandas_datareader.data as web
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import style
 from mpl_finance import candlestick_ohlc
 import matplotlib.dates as mdates
+import warnings
+
+warnings.simplefilter("ignore", category=PendingDeprecationWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+print('Real-time data crawling starts. This may take up to a few minutes...')
 
 def save_tickers():
     resp=requests.get('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
@@ -29,12 +36,12 @@ def fetch_data():
         tickers=pickle.load(f)
     if not os.path.exists('stock_details'):
         os.makedirs('stock_details')
-    count=200
+    max_count=50
     start= dt.datetime(2010,1,1)
     end=dt.datetime(2020,6,22)
     count=0
     for ticker in tickers:
-        if count==200:
+        if count==max_count:
             break
         count+=1
 
@@ -42,7 +49,6 @@ def fetch_data():
             df=web.DataReader(ticker, 'yahoo', start, end)
             df.to_csv('stock_details/{}.csv'.format(ticker))
         except:
-            print("Error")
             continue
 fetch_data()
 
@@ -82,4 +88,6 @@ ax2=plt.subplot2grid((6,1), (5,0), rowspan=1, colspan=1 , sharex=ax1)
 ax1.xaxis_date()
 candlestick_ohlc(ax1,df_ohlc.values, width=2, colorup='g')
 ax2.fill_between(df_volume.index.map(mdates.date2num),df_volume.values,0)
-plt.show()
+matplotlib.pyplot.show(block=True)
+plt.savefig('stock_fig')
+print('Stock plot saved as stock_fig.png.')

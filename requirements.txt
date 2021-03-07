@@ -1,9 +1,9 @@
 pylint
 click
 bs4
-pickle
 requests
 datetime
 pandas_datareader
 matplotlib
+mpl_finance
 mplfinance

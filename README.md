@@ -1,4 +1,4 @@
-# Stock Visualization on AWS Container
+# Stock Visualization Container on AWS 
 This project creates and deploys a Docker container on AWS which can do stock visualization. This project is easily scalable to do financial analysis and machine learning prediction.
 
 # Usage
